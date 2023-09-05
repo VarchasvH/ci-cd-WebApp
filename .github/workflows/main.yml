@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Validate HTML and CSS
+      run: |
+        # Install HTML validation tool
+        npm install -g html-validator-cli
+        
+        # Validate HTML files
+        find . -name "*.html" -exec html-validator-cli --file {} \;
+        
+        # Install CSS validation tool
+        npm install -g stylelint stylelint-config-standard
+        
+        # Validate CSS files
+        find . -name "*.css" -exec stylelint {} \;
+
+    - name: Deploy to Web Server or Cloud Storage
+      if: success()
+      run: |
+        # Replace this step with the deployment commands to your web server or cloud storage
+        # For example, if you're using GitHub Pages:
+        # git config user.name "GitHub Actions"
+        # git config user.email "actions@github.com"
+        # git checkout main
+        # git add .
+        # git commit -m "Auto-deploy to GitHub Pages"
+        # git push -f origin main
