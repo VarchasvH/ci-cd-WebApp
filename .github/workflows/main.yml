@@ -26,11 +26,11 @@ jobs:
       run: |
         # Validate HTML using HTMLHint
         npm install -g htmlhint
-        htmlhint ./*.html  # Replace with your HTML files' location
+        htmlhint ./index.html
         
         # Validate CSS using Stylelint
         npm install -g stylelint stylelint-config-standard
-        stylelint ./*.css  # Replace with your CSS files' location
+        stylelint ./css/*.css
 
     - name: Build
       run: |
