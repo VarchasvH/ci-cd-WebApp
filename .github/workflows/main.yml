@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -6,30 +6,39 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: |
+        npm install  # Replace with your package manager and dependencies if needed
+
     - name: Validate HTML and CSS
       run: |
-        # Install HTML validation tool
-        npm install -g html-validator-cli
+        # Validate HTML using HTMLHint
+        npm install -g htmlhint
+        htmlhint ./*.html  # Replace with your HTML files' location
         
-        # Validate HTML files
-        find . -name "*.html" -exec html-validator-cli --file {} \;
-        
-        # Install CSS validation tool
+        # Validate CSS using Stylelint
         npm install -g stylelint stylelint-config-standard
-        
-        # Validate CSS files
-        find . -name "*.css" -exec stylelint {} \;
+        stylelint ./*.css  # Replace with your CSS files' location
 
-    - name: Deploy to Web Server or Cloud Storage
-      if: success()
+    - name: Build
       run: |
+        npm run build
+
+    - name: Deploy to GitHub Pages
+      run: |
+        # Deploy to GitHub Pages
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git checkout main
