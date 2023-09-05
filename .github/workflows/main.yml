@@ -30,11 +30,9 @@ jobs:
     - name: Deploy to Web Server or Cloud Storage
       if: success()
       run: |
-        # Replace this step with the deployment commands to your web server or cloud storage
-        # For example, if you're using GitHub Pages:
-        # git config user.name "GitHub Actions"
-        # git config user.email "actions@github.com"
-        # git checkout main
-        # git add .
-        # git commit -m "Auto-deploy to GitHub Pages"
-        # git push -f origin main
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git checkout main
+        git add .
+        git commit -m "Auto-deploy to GitHub Pages"
+        git push -f origin main
