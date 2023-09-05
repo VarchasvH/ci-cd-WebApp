@@ -1,0 +1,31 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurency: cd-${{github.ref}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validate HTML and CSS
+        run: |
+          npm install -g htmlhint
+          htmlhint ./index.html
+        
+          npm install -g stylelint stylelint-config-standard
+          stylelint ./style.css
+      
+      - name: Deploy to GitHub Pages
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout main
+          git add .
+          git commit -m "Auto-deploy to GitHub Pages"
+          git push -f origin main
