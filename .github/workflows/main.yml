@@ -29,3 +29,17 @@ jobs:
           git add .
           git commit -m "Auto-deploy to GitHub Pages"
           git push -f origin main
+      
+      - name: Save Deployment Logs
+        if: success()
+        run: |
+          echo "Deployment successful" > deployment_status.txt
+          echo "Timestamp: $(date)" >> deployment_status.txt
+          echo "Commit Hash: $(git rev-parse HEAD)" >> deployment_status.txt
+
+      - name: Upload Deployment Logs
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: deployment-logs
+          path: deployment_status.txt
